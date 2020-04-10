@@ -32,7 +32,7 @@ function init () {
         playerPosition > 90 ? playerPosition-- : playerPosition
         break
       default:
-        console.log('invalid key, do nothing')
+        playerPosition
     }
     cells[playerPosition].classList.add('spaceship')
   }
