@@ -23,12 +23,13 @@ function init () {
   //* Player spaceship movement
 
   function handleKeyDown(event) {
+    cells[playerPosition].classList.remove('spaceship')
     switch (event.keyCode) {
       case 39:
-        playerPosition++
+        playerPosition < 99 ? playerPosition++ : playerPosition
         break
       case 37:
-        playerPosition--
+        playerPosition > 90 ? playerPosition-- : playerPosition
         break
       default:
         console.log('invalid key, do nothing')
