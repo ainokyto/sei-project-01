@@ -4,12 +4,12 @@ function init () {
 
   const grid = document.querySelector('.grid')
   const cells = []
-  const width = 10
+  const width = 20
   const cellCount = width * width
   
   //* Create grid dynamically
 
-  let playerPosition = 94
+  let playerPosition = 390
   function createGrid(startingPosition) {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
@@ -26,10 +26,10 @@ function init () {
     cells[playerPosition].classList.remove('spaceship')
     switch (event.keyCode) {
       case 39:
-        playerPosition < 99 ? playerPosition++ : playerPosition
+        playerPosition < 399 ? playerPosition++ : playerPosition
         break
       case 37:
-        playerPosition > 90 ? playerPosition-- : playerPosition
+        playerPosition > 380 ? playerPosition-- : playerPosition
         break
       default:
         playerPosition
