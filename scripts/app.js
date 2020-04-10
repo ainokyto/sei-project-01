@@ -9,7 +9,7 @@ function init () {
   
   //* Create grid dynamically
 
-  const playerPosition = 94
+  let playerPosition = 94
   function createGrid(startingPosition) {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
@@ -19,8 +19,27 @@ function init () {
     }
     cells[startingPosition].classList.add('spaceship')
   }
-  createGrid(playerPosition)
 
+  //* Player spaceship movement
+
+  function handleKeyDown(event) {
+    switch (event.keyCode) {
+      case 39:
+        playerPosition++
+        break
+      case 37:
+        playerPosition--
+        break
+      default:
+        console.log('invalid key, do nothing')
+    }
+    cells[playerPosition].classList.add('spaceship')
+  }
+  
+
+
+  createGrid(playerPosition)
+  document.addEventListener('keydown', handleKeyDown)
 }
 
 window.addEventListener('DOMContentLoaded', init)
