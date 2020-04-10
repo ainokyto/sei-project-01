@@ -4,7 +4,7 @@ function init () {
 
   const grid = document.querySelector('.grid')
   const cells = []
-  const width = 11
+  const width = 10
   const cellCount = width * width
   
   //* Create grid dynamically
