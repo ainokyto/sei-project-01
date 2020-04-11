@@ -1,12 +1,12 @@
 * {
   box-sizing: border-box;
+  /* cursor: pointer; */
 }
 
 body {
   height: 100vh;
   margin: 0;
 }
-
 
 .grid-wrapper {
   height: 100vh;
@@ -35,3 +35,23 @@ body {
 .grid div.spaceship {
   background-color: red;
 }
+
+.grid div.invaders {
+  background-color: yellow;
+}
+
+/* .invader .firstRow {
+  background-color: magenta;
+}
+
+.invader .secondRow {
+  background-color: greenyellow;
+}
+
+.invader .thirdRow {
+  background-color: turquoise;
+}
+
+.invader .fourthRow {
+  background-color: coral;
+} */
