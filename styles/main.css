@@ -28,8 +28,8 @@ body {
 .grid div {
   border: 1px solid lightgrey;
   flex-grow: 1;
-  height: 5%;
-  width: 5%;
+  height: 9%;
+  width: 9%;
 }
 
 .grid div.spaceship {
@@ -40,18 +40,22 @@ body {
   background-color: yellow;
 }
 
-/* .invader .firstRow {
+/*
+
+DIFF INVADER CLASSES FOR DIFF HP's - 'nice to have'
+
+.grid div.invaders.firstRow {
   background-color: magenta;
 }
 
-.invader .secondRow {
+.grid div.invaders.secondRow {
   background-color: greenyellow;
 }
 
-.invader .thirdRow {
+.grid div.invaders.thirdRow {
   background-color: turquoise;
 }
 
-.invader .fourthRow {
+.grid div.invaders.fourthRow {
   background-color: coral;
 } */
