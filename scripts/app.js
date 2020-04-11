@@ -2,6 +2,7 @@ function init() {
   // * DOM ELEMENTS ----------------------------------------------------------
 
   const startBtn = document.querySelector('.start')
+  const resetBtn = document.querySelector('.reset')
 
   // * GAME VARIABLES ------------------------------------------------------
   let direction = 1
@@ -12,9 +13,9 @@ function init() {
 
   //* // * START GAME --------------------------------------------------------
 
-  function gameInit() {
+  function gameInit() { 
 
-    // * CREATE GRID AND PLAYER SPACESHIP-------------------------------------
+    // * CREATE GRID AND PLAYER SPACESHIP -------------------------------------
 
     let playerPosition = 115
     function createGrid(startingPosition) {
@@ -46,6 +47,7 @@ function init() {
 
     setInterval(function moveInvaders() {
       removeInvaders() 
+      
       if (invaderArray[0] % width === 3 && direction === 1) {
         direction = width
       } else if (invaderArray[0] % width === 3 && direction === width) {
@@ -54,11 +56,11 @@ function init() {
         direction = width
       } else if (invaderArray[0] % width === 0 && direction === width) {
         direction = 1
-      // } else if (invaderArray[0] > width * width - width) {
-      //   gameOver()
+      } else if (invaderArray[0] > width * width - width) {
+        //! Make gameOver() function
       }
       addInvaders()
-    }, 300)
+    }, 1000)
 
     //* REMOVE INVADERS CLASS --------------------------------------------------
     function removeInvaders () {
@@ -94,19 +96,19 @@ function init() {
     createGrid(playerPosition)
     createInvaders()
     document.addEventListener('keydown', handleKeyDown)
-    
   }
+
+  //* CREATE FUNCTION TO FIRE AT INVADERS
+  
+  //* FUNCTION TO START GAME ---------------------------------------------------
   
   function handleStartBtn() {
+    //! throttle event
     gameInit()
-    startBtn.disabled = true // Try to look for a way to hide button after click!
-    //* start a timer and store in a variable
   }
   
-  //* EVENT LISTENERS
-  
-  
   startBtn.addEventListener('click', handleStartBtn)
+  resetBtn.addEventListener('click', gameInit)
   
 }
 
