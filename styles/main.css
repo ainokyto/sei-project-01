@@ -40,6 +40,10 @@ body {
   background-color: yellow;
 }
 
+.grid div.missile {
+  background-color: darkblue;
+}
+
 /*
 
 DIFF INVADER CLASSES FOR DIFF HP's - 'nice to have'
