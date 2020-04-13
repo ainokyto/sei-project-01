@@ -43,8 +43,8 @@ function init() {
     // in the if statement, -1 moves left, width down
 
     // game starts with invaders moving right
-    // function removeAliens - remove classes
-    // function addAliens - based on the direction(1) variable
+    // function removeInvaderss - remove classes
+    // function addInvaders - based on the direction(1) variable
 
 
     function moveInvaders() {
@@ -57,7 +57,7 @@ function init() {
         direction = width
       } else if (invaderArray[0] % width === 0 && direction === width) {
         direction = 1
-      } else if (invaderArray[0] > width * width - width) {
+      } else if (invaderArray[0] > width * width - width) { // when the first invader hits cell index 111 
         gameOver()
       }
       addInvaders()
@@ -79,13 +79,14 @@ function init() {
 
     //* START GAME TIMER
     
-    function startTimer () {
-      // GLOBAL SCOPE let gameRunning = true // set a variable true when you create the premise,
-      if (!gameRunning) { 
-        timerId = setInterval(moveInvaders, 1000) 
-        gameRunning = true //have completion of the premise set the variable false,
-      } else {
-        gameRunning = false  // don't create another instance of the premise if the variable is true.
+    function startTimer () { // stop gameInit from starting multiple instances of the timer 
+      // create a global variable for gameRunning and give it the value Boolean false
+      // create a global variable for timer and give it the value 'null'
+      if (!gameRunning) {  // make an if statement where if gameRunning = true, 
+        timerId = setInterval(moveInvaders, 1000) //timerId is assigned the value of a timer starting moving invaders, 
+        gameRunning = true // and gameRunning = true
+      } else { // if gameRunning is false, timer will not start
+        gameRunning = false 
       } 
     }
     startTimer()
@@ -102,7 +103,7 @@ function init() {
           playerPosition > 110 ? playerPosition-- : playerPosition
           break
         case 32:
-          console.log('I am the space bar')
+          fireLaser()
           break
         default:
           playerPosition
@@ -112,7 +113,11 @@ function init() {
 
     //* CREATE FUNCTION TO FIRE AT INVADERS
  
-    
+    function fireLaser () {
+      const laserIndex = playerPosition - width // laser starts at cell directly above player
+      cells[laserIndex].classList.add('laser')
+    }
+
 
     //* event spacebar
     //* playerposition - width the starting cell that advances up on the grid
