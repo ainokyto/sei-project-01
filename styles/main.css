@@ -44,6 +44,10 @@ body {
   background-color: darkblue;
 }
 
+.grid div.enemy {
+  background-color: darkorchid;
+}
+
 /*
 
 DIFF INVADER CLASSES FOR DIFF HP's - 'nice to have'

@@ -3,9 +3,14 @@ function init() {
 
   const startBtn = document.querySelector('.start')
   const resetBtn = document.querySelector('.reset')
-  // const score = document.querySelector('.actualscore')
+  const scoreTally = document.querySelector('.actualscore')
 
   // * GAME VARIABLES ------------------------------------------------------
+  const grid = document.querySelector('.grid')
+  const cells = []
+  const width = 11
+  const cellCount = width * width
+  let score = 0
   let direction = 1
   let gameRunning = false
   let invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
@@ -13,10 +18,9 @@ function init() {
     22, 23, 24, 25, 26, 27, 28, 29]
   let playerPosition = 115
   let timerId = null
-  const grid = document.querySelector('.grid')
-  const cells = []
-  const width = 11
-  const cellCount = width * width
+  let laserTimerId = null
+  let enemyLaserTimerId = null
+  let laserIndex = playerPosition - width // laser starts at cell directly above player
 
   //* // * START GAME --------------------------------------------------------
 
@@ -77,7 +81,7 @@ function init() {
       })
     }
 
-    //* START GAME TIMER
+    //* START GAME TIMER ------------------------------------------------------
 
     function startTimer() { // stop gameInit from starting multiple instances of the timer 
       // create a global variable for gameRunning and give it the value Boolean false
@@ -111,11 +115,55 @@ function init() {
       cells[playerPosition].classList.add('spaceship')
     }
 
-    //* CREATE FUNCTION TO FIRE AT INVADERS
+    //* ENEMY LASER STARTING POINT
+    function findEnemyLaser() { 
+      const randomInvader = Math.floor(Math.random() * invaderArray.length) // get a random number from array
+      let enemyLaserStart = invaderArray[randomInvader] + width
+      console.log(randomInvader)
+      if (!cells[enemyLaserStart].classList.contains('invaders')) {
+        cells[enemyLaserStart].classList.add('enemy')
+      } else if (!cells[enemyLaserStart + width].classList.contains('invaders')) {
+        cells[enemyLaserStart + width].classList.add('enemy')
+      } else {
+        cells[enemyLaserStart + (width * 2)].classList.add('enemy')
+      }
+    
+      enemyLaserAdvance()
+      enemyLaserTimerId = setInterval(enemyLaserAdvance, 100)
+    
+      function enemyLaserAdvance() {
+        cells[enemyLaserStart].classList.remove('enemy') // remove enemy class 
+        if (enemyLaserStart <= 110) {
+          enemyLaserStart += width
+          cells[enemyLaserStart].classList.add('enemy')
+        }
+      }
+    }
+
+
+    //* CREATE FUNCTION TO FIRE AT INVADERS ------------------------------------------------------
 
     function fireLaser() {
-      const laserIndex = playerPosition - width // laser starts at cell directly above player
       cells[laserIndex].classList.add('laser')
+      laserTimerId = setInterval(laserAdvance, 100)
+    }
+    //* FUNCTION TO MAKE LASER ADVANCE ACROSS THE GRID ------------------------------------------------------
+
+    function laserAdvance() {
+      cells[laserIndex].classList.remove('laser') // remove laser class
+      if (laserIndex > width - 1) { // stops at the grid
+        laserIndex = laserIndex - width // advancing on the cell directly above
+        cells[laserIndex].classList.add('laser') // add class to new square
+        //* COLLISION DETECTION
+        if (cells[laserIndex].classList.contains('invaders')) { // If laser 'hits' invader
+          clearInterval(laserTimerId) //stop timer
+          cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes
+          const index = invaderArray.indexOf(laserIndex) // locates the index of 'ht invader
+          invaderArray.splice(index, 1) // removes hit invader from the invader array
+          score += 1000
+          scoreTally.innerHTML = score
+        }
+      }
     }
 
 
@@ -128,6 +176,8 @@ function init() {
       gameRunning = false
       console.log(gameRunning)
       clearInterval(timerId)
+      clearInterval(laserTimerId)
+      clearInterval(enemyLaserTimerId)
     }
 
 
@@ -143,7 +193,7 @@ function init() {
     event.target.blur()
     gameInit()
   }
-  
+
   startBtn.addEventListener('click', handleStartBtn)
   resetBtn.addEventListener('click', gameInit)
 
