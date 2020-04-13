@@ -3,7 +3,7 @@ function init() {
 
   const startBtn = document.querySelector('.start')
   const resetBtn = document.querySelector('.reset')
-  const score = document.querySelector('.actualscore')
+  // const score = document.querySelector('.actualscore')
 
   // * GAME VARIABLES ------------------------------------------------------
   let direction = 1
@@ -78,16 +78,16 @@ function init() {
     }
 
     //* START GAME TIMER
-    
-    function startTimer () { // stop gameInit from starting multiple instances of the timer 
+
+    function startTimer() { // stop gameInit from starting multiple instances of the timer 
       // create a global variable for gameRunning and give it the value Boolean false
       // create a global variable for timer and give it the value 'null'
       if (!gameRunning) {  // make an if statement where if gameRunning = true, 
         timerId = setInterval(moveInvaders, 1000) //timerId is assigned the value of a timer starting moving invaders, 
         gameRunning = true // and gameRunning = true
       } else { // if gameRunning is false, timer will not start
-        gameRunning = false 
-      } 
+        gameRunning = false
+      }
     }
     startTimer()
 
@@ -112,8 +112,8 @@ function init() {
     }
 
     //* CREATE FUNCTION TO FIRE AT INVADERS
- 
-    function fireLaser () {
+
+    function fireLaser() {
       const laserIndex = playerPosition - width // laser starts at cell directly above player
       cells[laserIndex].classList.add('laser')
     }
@@ -140,9 +140,10 @@ function init() {
   //* FUNCTION TO START GAME ---------------------------------------------------
 
   function handleStartBtn() {
+    event.target.blur()
     gameInit()
   }
-
+  
   startBtn.addEventListener('click', handleStartBtn)
   resetBtn.addEventListener('click', gameInit)
 
