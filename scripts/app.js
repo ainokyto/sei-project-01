@@ -19,6 +19,8 @@ function init() {
     22, 23, 24, 25, 26, 27, 28, 29]
   let playerPosition = 115
   let timerId = null
+  let enemyFireTimerId = null
+  let firstRowTimerId = null
   let laserTimerId = null
 
 
@@ -53,7 +55,9 @@ function init() {
 
     function moveInvaders() {
       removeInvaders()
-      if (invaderArray[0] % width === 3 && direction === 1) {
+      if (invaderArray[0] > width * width - width) { // when the first invader hits cell index 111 
+        gameOver()
+      } else if (invaderArray[0] % width === 3 && direction === 1) {
         direction = width
       } else if (invaderArray[0] % width === 3 && direction === width) {
         direction = -1
@@ -61,8 +65,6 @@ function init() {
         direction = width
       } else if (invaderArray[0] % width === 0 && direction === width) {
         direction = 1
-      } else if (invaderArray[0] > width * width - width) { // when the first invader hits cell index 111 
-        gameOver()
       }
       addInvaders()
     }
@@ -87,7 +89,7 @@ function init() {
       // create a global variable for gameRunning and give it the value Boolean false
       // create a global variable for timer and give it the value 'null'
       if (!gameRunning) {  // make an if statement where if gameRunning = true, 
-        timerId = setInterval(moveInvaders, 2000) //timerId is assigned the value of a timer starting moving invaders, 
+        timerId = setInterval(moveInvaders, 1000) //timerId is assigned the value of a timer starting moving invaders, 
         gameRunning = true // and gameRunning = true
       } else { // if gameRunning is false, timer will not start
         gameRunning = false
@@ -115,15 +117,15 @@ function init() {
       cells[playerPosition].classList.add('spaceship')
     }
 
-    //* CREATE FUNCTION TO FIRE AT INVADERS ------------------------------------------------------
+    //* FIRE AT INVADERS ----------------------------------------------------------------
 
     function fireLaser() {
       let laserIndex = playerPosition - width // laser starts at cell directly above player
       cells[laserIndex].classList.add('laser')
-      laserTimerId = setInterval(laserAdvance, 100)
+      laserTimerId = setInterval(laserAdvance, 75)
 
 
-      //* FUNCTION TO MAKE LASER ADVANCE ACROSS THE GRID ------------------------------------------------------
+      //* MAKE LASER ADVANCE ACROSS THE GRID ------------------------------------------------------
 
       function laserAdvance() {
         cells[laserIndex].classList.remove('laser') // remove laser class
@@ -136,7 +138,7 @@ function init() {
             clearInterval(laserTimerId) //stop timer
             cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes
             const hitInvader = invaderArray.indexOf(laserIndex) //! locates the index of hit invader
-            invaderArray.splice(hitInvader, 1) //! removes the hit invader from invaderArray
+            invaderArray.splice(hitInvader, 1) //! use .filter() here instead?
             score += 1000
             scoreTally.innerHTML = score
             if (invaderArray.length === 0) {
@@ -147,12 +149,51 @@ function init() {
       }
     }
 
+    //* START ENEMY LASER TIMER --------------------------------------------------------
+    function firstRowTimer() {
+      console.log('enemy laser shoot')
+      firstRowTimerId = setInterval(checkFirstRow, 1000)
+    }
+    //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ---------------------------------------------------------
+    function checkFirstRow() {
+      const randomInvader = Math.floor(Math.random() * invaderArray.length) // get random number from the array length
+      // console.log(randomInvader)
+      let enemyLaserStart = invaderArray[randomInvader] + width // get cell directly below random invader
+      // console.log(enemyLaserStart)
+      if (!cells[enemyLaserStart].classList.contains('invaders')) { // if random invader is on first row
+        cells[enemyLaserStart].classList.add('enemy') // start laser here
+      } else if (!cells[enemyLaserStart + width].classList.contains('invaders')) { // if random invader is on second row
+        cells[enemyLaserStart].classList.add('enemy') // start laser here
+      } else {
+        cells[enemyLaserStart + width + width].classList.add('enemy')
+      }
+
+      enemyFire()
+      enemyFireTimerId = setInterval(enemyFire, 500)
+
+      //* ENEMY LASER ADVANCE ACROSS THE GRID
+      function enemyFire() {
+        cells[enemyLaserStart].classList.remove('enemy') // remove enemy laser class
+        if (enemyLaserStart <= 110) { // stop at the bottom
+          enemyLaserStart += width // make laser move down
+          cells[enemyLaserStart].classList.add('enemy')
+          if (cells[enemyLaserStart].classList.contains('spaceship')) {
+            gameOver()
+          }
+        } else {
+          clearInterval(enemyLaserStart)
+        }
+      }
+    }
+
     function gameOver() {
-      window.alert(`Game over! Your score is: ${score}`)
       gameRunning = false
       clearInterval(timerId)
       clearInterval(laserTimerId)
+      clearInterval(enemyFireTimerId)
+      clearInterval(firstRowTimerId)
       clearGrid()
+      window.alert(`Game over! Your score is: ${score}`)
     }
 
     function clearGrid() { // resetting variables for game restart
@@ -166,17 +207,19 @@ function init() {
       direction = 1
       playerPosition = 115
     }
-
+    
     createGrid(playerPosition)
     createInvaders()
     document.addEventListener('keydown', handleKeyDown)
-
+    startBtn.addEventListener('click', firstRowTimer)
+    
   }
-
+  
   //* FUNCTION TO START GAME ---------------------------------------------------
-
+  
   function handleStartBtn() {
     gameInit()
+    // startBtn.disabled = true
     event.target.blur()
   }
 
