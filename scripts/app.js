@@ -17,10 +17,11 @@ function init() {
   let invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
     11, 12, 13, 14, 15, 16, 17, 18,
     22, 23, 24, 25, 26, 27, 28, 29]
+  const invadersKilled = []
   let playerPosition = 115
   let timerId = null
   let laserTimerId = null
-  let enemyLaserTimerId = null
+  const enemyLaserTimerId = null
 
 
   //* // * START GAME --------------------------------------------------------
@@ -117,35 +118,6 @@ function init() {
       cells[playerPosition].classList.add('spaceship')
     }
 
-    //* START ENEMY ATTACK TIMER 
-    function enemyLaserTimer() {
-      enemyLaserTimerId = setInterval(fireEnemyLaser, 1000)
-    }
-    //* ENEMY LASER STARTING POINT
-    function fireEnemyLaser() {
-      const randomInvader = Math.floor(Math.random() * invaderArray.length) // get a random invader from array
-      let enemyLaserStart = invaderArray[randomInvader] + width // only the first row can fire
-      console.log(randomInvader)
-
-      enemyLaserAdvance()
-      enemyLaserTimerId = setInterval(enemyLaserAdvance, 200)
-
-      //* ENEMY LASER ADVANCE
-
-      function enemyLaserAdvance() {
-        cells[enemyLaserStart].classList.remove('enemy') // remove enemy class 
-        if (enemyLaserStart <= 110) {
-          enemyLaserStart += width
-          cells[enemyLaserStart].classList.add('enemy')
-          if (cells[enemyLaserStart].classList.contains('spaceship')) {
-            gameOver()
-          }
-        } else {
-          clearInterval(enemyLaserTimerId)
-        }
-      }
-    }
-
     //* CREATE FUNCTION TO FIRE AT INVADERS ------------------------------------------------------
 
     function fireLaser() {
@@ -160,14 +132,15 @@ function init() {
         cells[laserIndex].classList.remove('laser') // remove laser class
         if (laserIndex > width - 1) { // stops at the grid
           laserIndex = laserIndex - width // finding the cell directly above curren laserindex
+          // console.log(laserIndex)
           cells[laserIndex].classList.add('laser') // add class to new square
 
           //* COLLISION DETECTION
           if (cells[laserIndex].classList.contains('invaders')) { // If laser 'hits' invader
             clearInterval(laserTimerId) //stop timer
             cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes
-            const index = invaderArray.indexOf(laserIndex) // locates the index of 'ht invader
-            invaderArray.splice(index, 1) // removes hit invader from the invader array
+            const hitInvader = invaderArray.indexOf(laserIndex) //! locates the index of hit invader
+            hitInvader.classList.remove('invaders') //! removes class from the hit invader
             score += 1000
             scoreTally.innerHTML = score
           }
