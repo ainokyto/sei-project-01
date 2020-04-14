@@ -115,6 +115,10 @@ function init() {
       cells[playerPosition].classList.add('spaceship')
     }
 
+    //* START ENEMY ATTACK TIMER 
+    function enemyLaserTimer() {
+      enemyLaserTimerId = setInterval(findEnemyLaser, 1000)
+    }
     //* ENEMY LASER STARTING POINT
     function findEnemyLaser() { 
       const randomInvader = Math.floor(Math.random() * invaderArray.length) // get a random number from array
@@ -129,13 +133,20 @@ function init() {
       }
     
       enemyLaserAdvance()
-      enemyLaserTimerId = setInterval(enemyLaserAdvance, 100)
-    
+      enemyLaserTimerId = setInterval(enemyLaserAdvance, 200)
+      
+      //* ENEMY LASER ADVANCE
+      
       function enemyLaserAdvance() {
         cells[enemyLaserStart].classList.remove('enemy') // remove enemy class 
         if (enemyLaserStart <= 110) {
           enemyLaserStart += width
           cells[enemyLaserStart].classList.add('enemy')
+          if (cells[enemyLaserStart].classList.contains('spaceship')) {
+            gameOver()
+          }
+        } else {
+          clearInterval(enemyLaserTimerId)
         }
       }
     }
@@ -184,6 +195,7 @@ function init() {
     createGrid(playerPosition)
     createInvaders()
     document.addEventListener('keydown', handleKeyDown)
+    startBtn.addEventListener('click', enemyLaserTimer)
 
   }
 
