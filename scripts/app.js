@@ -17,11 +17,9 @@ function init() {
   let invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
     11, 12, 13, 14, 15, 16, 17, 18,
     22, 23, 24, 25, 26, 27, 28, 29]
-  const invadersKilled = []
   let playerPosition = 115
   let timerId = null
   let laserTimerId = null
-  const enemyLaserTimerId = null
 
 
   //* // * START GAME --------------------------------------------------------
@@ -52,7 +50,6 @@ function init() {
     // when Invader Zero hits index 3 the move width down to 14
     // function removeInvaderss - remove classes
     // function addInvaders - based on the direction(1) variable
-
 
     function moveInvaders() {
       removeInvaders()
@@ -132,7 +129,6 @@ function init() {
         cells[laserIndex].classList.remove('laser') // remove laser class
         if (laserIndex > width - 1) { // stops at the grid
           laserIndex = laserIndex - width // finding the cell directly above curren laserindex
-          // console.log(laserIndex)
           cells[laserIndex].classList.add('laser') // add class to new square
 
           //* COLLISION DETECTION
@@ -140,9 +136,12 @@ function init() {
             clearInterval(laserTimerId) //stop timer
             cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes
             const hitInvader = invaderArray.indexOf(laserIndex) //! locates the index of hit invader
-            hitInvader.classList.remove('invaders') //! removes class from the hit invader
+            invaderArray.splice(hitInvader, 1) //! removes the hit invader from invaderArray
             score += 1000
             scoreTally.innerHTML = score
+            if (invaderArray.length === 0) {
+              window.alert(`You win! Your score is: ${score}`)
+            }
           }
         }
       }
@@ -153,7 +152,6 @@ function init() {
       gameRunning = false
       clearInterval(timerId)
       clearInterval(laserTimerId)
-      clearInterval(enemyLaserTimerId)
       clearGrid()
     }
 
@@ -172,7 +170,6 @@ function init() {
     createGrid(playerPosition)
     createInvaders()
     document.addEventListener('keydown', handleKeyDown)
-    startBtn.addEventListener('click', enemyLaserTimer)
 
   }
 
