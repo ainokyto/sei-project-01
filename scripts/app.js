@@ -4,6 +4,7 @@ function init() {
   const startBtn = document.querySelector('.start')
   const resetBtn = document.querySelector('.reset')
   const scoreTally = document.querySelector('.actualscore')
+  const audio = document.querySelector('#audio')
 
   // * GAME VARIABLES ------------------------------------------------------
 
@@ -26,7 +27,7 @@ function init() {
 
   //* // * START GAME --------------------------------------------------------
 
-  function gameInit() {
+  function gameStart() {
 
     createGrid(playerPosition)
     createInvaders()
@@ -39,7 +40,7 @@ function init() {
     function createGrid(startingPosition) {
       for (let i = 0; i < cellCount; i++) {
         const cell = document.createElement('div')
-        cell.textContent = i
+        // cell.textContent = i
         grid.appendChild(cell)
         cells.push(cell)
       }
@@ -132,9 +133,11 @@ function init() {
     //* FIRE AT INVADERS ----------------------------------------------------------------
 
     function fireLaser() {
+      audio.src = '../assets/meow.wav'
+      audio.play()
       let laserIndex = playerPosition - width // laser starts at cell directly above player
       cells[laserIndex].classList.add('laser')
-      laserTimerId = setInterval(laserAdvance, 75)
+      laserTimerId = setInterval(laserAdvance, 100)
 
 
       //* MAKE LASER ADVANCE ACROSS THE GRID ------------------------------------------------------
@@ -153,6 +156,8 @@ function init() {
             invaderArray.splice(hitInvader, 1) //! use .filter() here instead?
             score += 1000
             scoreTally.innerHTML = score
+            audio.src = '../assets/zap.wav'
+            audio.play()
             if (invaderArray.length === 0) {
               window.alert(`You win! Your score is: ${score}`)
             }
@@ -163,6 +168,8 @@ function init() {
 
     //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ---------------------------------------------------------
     function checkFirstRow() {
+      // audio.src = '../assets/laser.wav'
+      // audio.play()
       const randomInvader = Math.floor(Math.random() * invaderArray.length) // get random number from the array length
       // console.log(randomInvader)
       let enemyLaserStart = invaderArray[randomInvader] + width // get cell directly below random invader
@@ -194,6 +201,8 @@ function init() {
     }
 
     function gameOver() {
+      audio.src = '../assets/death.wav'
+      audio.play()
       window.alert(`Game over! Your score is: ${score}`)
       gameRunning = false
       clearInterval(timerId)
@@ -223,13 +232,13 @@ function init() {
   //* FUNCTION TO START GAME ---------------------------------------------------
 
   function handleStartBtn() {
-    gameInit()
-    // startBtn.disabled = true
+    gameStart()
+    startBtn.disabled = true
     event.target.blur()
   }
 
   startBtn.addEventListener('click', handleStartBtn)
-  resetBtn.addEventListener('click', gameInit)
+  resetBtn.addEventListener('click', gameStart)
 
 }
 

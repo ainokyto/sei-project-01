@@ -11,6 +11,12 @@ body {
   background-position: center center;
 }
 
+.startmodule {
+  background-image:url(../assets/white-house-joe.png);
+  background-size: cover;
+  background-position: center center;
+}
+
 .dashboard {
   display: flex;
   flex-direction: column;
