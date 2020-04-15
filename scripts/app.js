@@ -33,12 +33,6 @@ function init() {
     startTimer()
     firstRowTimer()
 
-    //* START ENEMY LASER TIMER --------------------------------------------------------
-    function firstRowTimer() {
-      console.log('enemy laser shoot')
-      firstRowTimerId = setInterval(checkFirstRow, 1000)
-    }
-
     // * CREATE GRID AND PLAYER SPACESHIP -------------------------------------
 
     function createGrid(startingPosition) {
@@ -107,6 +101,12 @@ function init() {
       }
     }
 
+    //* START ENEMY LASER TIMER --------------------------------------------------------
+    function firstRowTimer() {
+      console.log('enemy laser shoot')
+      firstRowTimerId = setInterval(checkFirstRow, 2000)
+    }
+
     //* PLAYER SPACESHIP MOVEMENT ---------------------------------------------
 
     function handleKeyDown(event) {
@@ -159,8 +159,8 @@ function init() {
       }
     }
 
-    
-    
+
+
     //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ---------------------------------------------------------
     function checkFirstRow() {
       const randomInvader = Math.floor(Math.random() * invaderArray.length) // get random number from the array length
