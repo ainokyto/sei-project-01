@@ -4,8 +4,9 @@ function init() {
   const startBtn = document.querySelector('.start')
   const resetBtn = document.querySelector('.reset')
   const scoreTally = document.querySelector('.actualscore')
-  const audio = document.querySelector('#audio')
-
+  const playerAudio = document.querySelector('#playeraudio')
+  const enemyAudio = document.querySelector('#enemyaudio')
+  
   // * GAME VARIABLES ------------------------------------------------------
 
   const grid = document.querySelector('.grid')
@@ -133,8 +134,8 @@ function init() {
     //* FIRE AT INVADERS ----------------------------------------------------------------
 
     function fireLaser() {
-      audio.src = '../assets/meow.wav'
-      audio.play()
+      playerAudio.src = '../assets/meow.wav'
+      playerAudio.play()
       let laserIndex = playerPosition - width // laser starts at cell directly above player
       cells[laserIndex].classList.add('laser')
       laserTimerId = setInterval(laserAdvance, 100)
@@ -156,8 +157,8 @@ function init() {
             invaderArray.splice(hitInvader, 1) //! use .filter() here instead?
             score += 1000
             scoreTally.innerHTML = score
-            audio.src = '../assets/zap.wav'
-            audio.play()
+            enemyAudio.src = '../assets/zap.wav'
+            enemyAudio.play()
             if (invaderArray.length === 0) {
               window.alert(`You win! Your score is: ${score}`)
             }
@@ -201,8 +202,8 @@ function init() {
     }
 
     function gameOver() {
-      audio.src = '../assets/death.wav'
-      audio.play()
+      playerAudio.src = '../assets/death.wav'
+      playerAudio.play()
       window.alert(`Game over! Your score is: ${score}`)
       gameRunning = false
       clearInterval(timerId)

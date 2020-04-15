@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Space Invaders</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <script src="scripts/app.js" charset="utf-8"></script>
-  </head>
-  <body>
-    <audio id="audio"></audio>
-    <div class="dashboard">
-      <p>Your Score Is:</p><span class="actualscore"></span>
+
+<head>
+  <meta charset="utf-8">
+  <title>Space Invaders</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <script src="scripts/app.js" charset="utf-8"></script>
+</head>
+<header>
+  <h1>SPACE INVADERS</h1>
+  <h2>Tiger King Edition</h2>
+</header>
+
+<body>
+  <div class="buttons">
     <button class="start">Play Game</button>
     <button class="reset">Start Over</button>
   </div>
-    <div class="grid-wrapper">
-      <div class="grid"></div>
-    </div>
-  </body>
+  <audio id="playeraudio"></audio>
+  <audio id="enemyaudio"></audio>
+  <div class="score">
+    <p>Your Score Is:</p><span class="actualscore"></span>
+  </div>
+  <div class="grid-wrapper">
+    <div class="grid"></div>
+  </div>
+</body>
+
 </html>
