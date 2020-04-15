@@ -5,19 +5,34 @@
 
 body {
   height: 100vh;
-  margin: 0;
+  margin: 0 auto;
+  background-image:url(../assets/carole-joe-background.png);
+  background-size: cover;
+  background-position: center center;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 42%;
+  margin-top: 5vh;
+  padding-bottom: 15px;
+  border: 2px solid black;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .grid-wrapper {
-  height: 100vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .grid {
+  background-color: rgba(0, 0, 0, 0.7);
   align-items: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2); */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -26,27 +41,38 @@ body {
 }
 
 .grid div {
-  border: 1px solid lightgrey;
+  border: 1px solid black;
+  border-style: dotted;
   flex-grow: 1;
   height: 9%;
   width: 9%;
 }
 
 .grid div.spaceship {
-  background-color: red;
+  background-image: url(../assets/joe-sprite.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .grid div.invaders {
-  background-color: yellow;
+  background-image: url(../assets/carole-sprite.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .grid div.laser {
-  background-color: darkblue;
+  background-image: url(../assets/cub.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .grid div.enemy {
-  background-color: darkorchid;
+  background-image: url(../assets/laser-png-17-original.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
+
+
 
 /*
 

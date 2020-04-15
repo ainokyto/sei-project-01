@@ -33,6 +33,7 @@ function init() {
     startTimer()
     firstRowTimer()
 
+
     // * CREATE GRID AND PLAYER SPACESHIP -------------------------------------
 
     function createGrid(startingPosition) {
@@ -88,24 +89,25 @@ function init() {
       })
     }
 
-    //* START GAME TIMER ------------------------------------------------------
+    //* GAME TIMER ------------------------------------------------------
 
     function startTimer() { // stop gameInit from starting multiple instances of the timer 
       // create a global variable for gameRunning and give it the value Boolean false
       // create a global variable for timer and give it the value 'null'
       if (!gameRunning) {  // make an if statement where if gameRunning = true, 
-        timerId = setInterval(moveInvaders, 1000) //timerId is assigned the value of a timer starting moving invaders, 
+        timerId = setInterval(moveInvaders, 1500) //timerId is assigned the value of a timer starting moving invaders, 
         gameRunning = true // and gameRunning = true
       } else { // if gameRunning is false, timer will not start
         gameRunning = false
       }
     }
 
-    //* START ENEMY LASER TIMER --------------------------------------------------------
+    //* ENEMY LASER TIMER --------------------------------------------------------
     function firstRowTimer() {
-      console.log('enemy laser shoot')
+      // console.log('enemy laser shoot')
       firstRowTimerId = setInterval(checkFirstRow, 2000)
     }
+
 
     //* PLAYER SPACESHIP MOVEMENT ---------------------------------------------
 
@@ -158,8 +160,6 @@ function init() {
         }
       }
     }
-
-
 
     //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ---------------------------------------------------------
     function checkFirstRow() {
