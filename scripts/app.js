@@ -28,6 +28,17 @@ function init() {
 
   function gameInit() {
 
+    createGrid(playerPosition)
+    createInvaders()
+    startTimer()
+    firstRowTimer()
+
+    //* START ENEMY LASER TIMER --------------------------------------------------------
+    function firstRowTimer() {
+      console.log('enemy laser shoot')
+      firstRowTimerId = setInterval(checkFirstRow, 1000)
+    }
+
     // * CREATE GRID AND PLAYER SPACESHIP -------------------------------------
 
     function createGrid(startingPosition) {
@@ -95,7 +106,6 @@ function init() {
         gameRunning = false
       }
     }
-    startTimer()
 
     //* PLAYER SPACESHIP MOVEMENT ---------------------------------------------
 
@@ -149,11 +159,8 @@ function init() {
       }
     }
 
-    //* START ENEMY LASER TIMER --------------------------------------------------------
-    function firstRowTimer() {
-      console.log('enemy laser shoot')
-      firstRowTimerId = setInterval(checkFirstRow, 1000)
-    }
+    
+    
     //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ---------------------------------------------------------
     function checkFirstRow() {
       const randomInvader = Math.floor(Math.random() * invaderArray.length) // get random number from the array length
@@ -187,13 +194,13 @@ function init() {
     }
 
     function gameOver() {
+      window.alert(`Game over! Your score is: ${score}`)
       gameRunning = false
       clearInterval(timerId)
       clearInterval(laserTimerId)
       clearInterval(enemyFireTimerId)
       clearInterval(firstRowTimerId)
       clearGrid()
-      window.alert(`Game over! Your score is: ${score}`)
     }
 
     function clearGrid() { // resetting variables for game restart
@@ -207,16 +214,14 @@ function init() {
       direction = 1
       playerPosition = 115
     }
-    
-    createGrid(playerPosition)
-    createInvaders()
+
     document.addEventListener('keydown', handleKeyDown)
     startBtn.addEventListener('click', firstRowTimer)
-    
+
   }
-  
+
   //* FUNCTION TO START GAME ---------------------------------------------------
-  
+
   function handleStartBtn() {
     gameInit()
     // startBtn.disabled = true
