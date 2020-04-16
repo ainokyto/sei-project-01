@@ -22,7 +22,6 @@ function init() {
     22, 23, 24, 25, 26, 27, 28, 29]
   let leadInvader = 0
   let playerPosition = 115
-  const isPlayerDead = false
   let timerId = null
   let enemyFireTimerId = null
   let firstRowTimerId = null
@@ -32,7 +31,7 @@ function init() {
   //* // * START GAME --------------------------------------------------------
 
   function gameStart() {
-    
+
     createGrid(playerPosition)
     createInvaders()
     startTimer()
@@ -66,7 +65,6 @@ function init() {
 
     function moveInvaders() {
       removeInvaders()
-      // console.log((width * width) - (width * 2))
       if (leadInvader % width === 3 && direction === 1) {
         direction = width
       } else if (leadInvader % width === 3 && direction === width) {
@@ -75,10 +73,9 @@ function init() {
         direction = width
       } else if (leadInvader % width === 0 && direction === width) {
         direction = 1
-      } else if (leadInvader > (width * width) - (width + width)) {
-        gameOver()
       }
       addInvaders()
+      lastRow()
     }
 
     //* REMOVE INVADERS CLASS --------------------------------------------------
@@ -95,6 +92,16 @@ function init() {
         cells[invader].classList.add('invaders')
       })
     }
+
+    function lastRow() {
+      const playerCollision = invaderArray.some(invader => {
+        return cells[invader].classList.contains('spaceship')
+      })
+      if (playerCollision === true) {
+        gameOver()
+      } return
+    }
+
     //* GAME TIMER ------------------------------------------------------
 
     function startTimer() { // stop gameInit from starting multiple instances of the timer 
@@ -157,7 +164,6 @@ function init() {
       } else {
         console.log('you cant shoot!')
       }
-
 
       //* MAKE LASER ADVANCE ACROSS THE GRID ------------------------------------------------------
 
@@ -240,7 +246,7 @@ function init() {
         clearInterval(i)
       }
     }
-    
+
 
     function clearGrid() { // resetting variables for game restart
       grid.innerHTML = ''
