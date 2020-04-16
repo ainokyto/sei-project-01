@@ -6,7 +6,8 @@ function init() {
   const scoreTally = document.querySelector('.actualscore')
   const playerAudio = document.querySelector('#playeraudio')
   const enemyAudio = document.querySelector('#enemyaudio')
-  
+  const header = document.querySelector('header')
+
   // * GAME VARIABLES ------------------------------------------------------
 
   const grid = document.querySelector('.grid')
@@ -19,6 +20,7 @@ function init() {
   let invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
     11, 12, 13, 14, 15, 16, 17, 18,
     22, 23, 24, 25, 26, 27, 28, 29]
+  let leadInvader = 0 
   let playerPosition = 115
   let timerId = null
   let enemyFireTimerId = null
@@ -41,7 +43,7 @@ function init() {
     function createGrid(startingPosition) {
       for (let i = 0; i < cellCount; i++) {
         const cell = document.createElement('div')
-        // cell.textContent = i
+        cell.textContent = i
         grid.appendChild(cell)
         cells.push(cell)
       }
@@ -63,15 +65,17 @@ function init() {
 
     function moveInvaders() {
       removeInvaders()
-      if (invaderArray[0] > width * width - width) { // when the first invader hits cell index 111 
-        gameOver()
-      } else if (invaderArray[0] % width === 3 && direction === 1) {
+      const lastRow = (width * width) - width
+      if (leadInvader === lastRow) { // when the first invader hits cell index 111 
+        // console.log(lastRow)
+        gameOver() //! gameOver() function does not run when invaders hit the bottom
+      } else if (leadInvader % width === 3 && direction === 1) {
         direction = width
-      } else if (invaderArray[0] % width === 3 && direction === width) {
+      } else if (leadInvader % width === 3 && direction === width) {
         direction = -1
-      } else if (invaderArray[0] % width === 0 && direction === -1) {
+      } else if (leadInvader % width === 0 && direction === -1) {
         direction = width
-      } else if (invaderArray[0] % width === 0 && direction === width) {
+      } else if (leadInvader % width === 0 && direction === width) {
         direction = 1
       }
       addInvaders()
@@ -86,6 +90,7 @@ function init() {
     //* ADD INVADERS CLASS ------------------------------------------------------
     function addInvaders() { // draws the invaders back on their new position on the grid
       invaderArray = invaderArray.map(a => a + direction)
+      leadInvader = leadInvader + direction
       invaderArray.forEach(invader => {
         cells[invader].classList.add('invaders')
       })
@@ -122,7 +127,7 @@ function init() {
         case 37:
           playerPosition > 110 ? playerPosition-- : playerPosition
           break
-        case 38:
+        case 32:
           fireLaser()
           break
         default:
@@ -137,10 +142,25 @@ function init() {
       playerAudio.src = '../assets/meow.wav'
       playerAudio.play()
       let laserIndex = playerPosition - width // laser starts at cell directly above player
-      cells[laserIndex].classList.add('laser')
-      laserTimerId = setInterval(laserAdvance, 100)
+      let newLaserIndex = laserIndex
+      const columnArray = []
 
+      for (let i = 1; i < width - 1; i++) {
+        columnArray.push(newLaserIndex -= 11)
+      }
 
+      const someContainLasers = columnArray.some(item => {
+        return cells[item].classList.contains('laser')
+      })
+
+      if (someContainLasers === false) {
+        cells[laserIndex].classList.add('laser')
+        laserTimerId = setInterval(laserAdvance, 100)
+      } else {
+        console.log('you cant shoot!')
+      }
+      
+  
       //* MAKE LASER ADVANCE ACROSS THE GRID ------------------------------------------------------
 
       function laserAdvance() {
@@ -152,15 +172,22 @@ function init() {
           //* COLLISION DETECTION
           if (cells[laserIndex].classList.contains('invaders')) { // If laser 'hits' invader
             clearInterval(laserTimerId) //stop timer
-            cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes
-            const hitInvader = invaderArray.indexOf(laserIndex) //! locates the index of hit invader
-            invaderArray.splice(hitInvader, 1) //! use .filter() here instead?
+            cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes 
+
+            // const killedAliensArray = []
+            // const killedAliens = invaderArray.indexOf(laserIndex) 
+            // invaderArray.pop(killedAliens)
+            // killedAliensArray.push(killedAliens) 
+
+            const killedInvader = invaderArray.indexOf(laserIndex) // locates the index of hit invader
+            invaderArray.splice(killedInvader, 1)
+            //! when invader[0] gets spliced out of the array it affects movement logic
             score += 1000
             scoreTally.innerHTML = score
             enemyAudio.src = '../assets/zap.wav'
             enemyAudio.play()
             if (invaderArray.length === 0) {
-              window.alert(`You win! Your score is: ${score}`)
+              header.innerHTML = `You win! Your score is: ${score}`
             }
           }
         }
@@ -184,9 +211,10 @@ function init() {
       }
 
       enemyFire()
-      enemyFireTimerId = setInterval(enemyFire, 500)
+      enemyFireTimerId = setInterval(enemyFire, 250)
 
-      //* ENEMY LASER ADVANCE ACROSS THE GRID
+      //* ENEMY LASER ADVANCE ACROSS THE GRID -------------------------------------------------------
+
       function enemyFire() {
         cells[enemyLaserStart].classList.remove('enemy') // remove enemy laser class
         if (enemyLaserStart <= 110) { // stop at the bottom
@@ -202,15 +230,18 @@ function init() {
     }
 
     function gameOver() {
+      header.innerHTML = `Game over! Your score is: ${score}`
       playerAudio.src = '../assets/death.wav'
       playerAudio.play()
-      window.alert(`Game over! Your score is: ${score}`)
       gameRunning = false
+      clearGrid()
       clearInterval(timerId)
       clearInterval(laserTimerId)
       clearInterval(enemyFireTimerId)
       clearInterval(firstRowTimerId)
-      clearGrid()
+      for (let i = 0; i < 1000; i++) {
+        clearInterval(i)
+      }
     }
 
     function clearGrid() { // resetting variables for game restart
