@@ -20,8 +20,9 @@ function init() {
   let invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
     11, 12, 13, 14, 15, 16, 17, 18,
     22, 23, 24, 25, 26, 27, 28, 29]
-  let leadInvader = 0 
+  let leadInvader = 0
   let playerPosition = 115
+  const isPlayerDead = false
   let timerId = null
   let enemyFireTimerId = null
   let firstRowTimerId = null
@@ -31,7 +32,7 @@ function init() {
   //* // * START GAME --------------------------------------------------------
 
   function gameStart() {
-
+    
     createGrid(playerPosition)
     createInvaders()
     startTimer()
@@ -60,16 +61,13 @@ function init() {
 
     // game starts with invaders moving right
     // when Invader Zero hits index 3 the move width down to 14
-    // function removeInvaderss - remove classes
+    // function removeInvaders - remove classes
     // function addInvaders - based on the direction(1) variable
 
     function moveInvaders() {
       removeInvaders()
-      const lastRow = (width * width) - width
-      if (leadInvader === lastRow) { // when the first invader hits cell index 111 
-        // console.log(lastRow)
-        gameOver() //! gameOver() function does not run when invaders hit the bottom
-      } else if (leadInvader % width === 3 && direction === 1) {
+      // console.log((width * width) - (width * 2))
+      if (leadInvader % width === 3 && direction === 1) {
         direction = width
       } else if (leadInvader % width === 3 && direction === width) {
         direction = -1
@@ -77,6 +75,8 @@ function init() {
         direction = width
       } else if (leadInvader % width === 0 && direction === width) {
         direction = 1
+      } else if (leadInvader > (width * width) - (width + width)) {
+        gameOver()
       }
       addInvaders()
     }
@@ -95,14 +95,13 @@ function init() {
         cells[invader].classList.add('invaders')
       })
     }
-
     //* GAME TIMER ------------------------------------------------------
 
     function startTimer() { // stop gameInit from starting multiple instances of the timer 
       // create a global variable for gameRunning and give it the value Boolean false
       // create a global variable for timer and give it the value 'null'
       if (!gameRunning) {  // make an if statement where if gameRunning = true, 
-        timerId = setInterval(moveInvaders, 1500) //timerId is assigned the value of a timer starting moving invaders, 
+        timerId = setInterval(moveInvaders, 200) //timerId is assigned the value of a timer starting moving invaders, 
         gameRunning = true // and gameRunning = true
       } else { // if gameRunning is false, timer will not start
         gameRunning = false
@@ -114,7 +113,6 @@ function init() {
       // console.log('enemy laser shoot')
       firstRowTimerId = setInterval(checkFirstRow, 2000)
     }
-
 
     //* PLAYER SPACESHIP MOVEMENT ---------------------------------------------
 
@@ -153,14 +151,14 @@ function init() {
         return cells[item].classList.contains('laser')
       })
 
-      if (someContainLasers === false) {
+      if (!someContainLasers) {
         cells[laserIndex].classList.add('laser')
         laserTimerId = setInterval(laserAdvance, 100)
       } else {
         console.log('you cant shoot!')
       }
-      
-  
+
+
       //* MAKE LASER ADVANCE ACROSS THE GRID ------------------------------------------------------
 
       function laserAdvance() {
@@ -181,7 +179,6 @@ function init() {
 
             const killedInvader = invaderArray.indexOf(laserIndex) // locates the index of hit invader
             invaderArray.splice(killedInvader, 1)
-            //! when invader[0] gets spliced out of the array it affects movement logic
             score += 1000
             scoreTally.innerHTML = score
             enemyAudio.src = '../assets/zap.wav'
@@ -243,6 +240,7 @@ function init() {
         clearInterval(i)
       }
     }
+    
 
     function clearGrid() { // resetting variables for game restart
       grid.innerHTML = ''
