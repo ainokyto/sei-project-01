@@ -33,7 +33,7 @@ function init() {
   //* // * START GAME --------------------------------------------------------
 
   function gameStart() {
-    document.classList.add = 'startcontent'
+
     createGrid(playerPosition)
     createInvaders()
     startTimer()
@@ -112,7 +112,7 @@ function init() {
       // create a global variable for gameRunning and give it the value Boolean false
       // create a global variable for timer and give it the value 'null'
       if (!gameRunning) {  // make an if statement where if gameRunning = true, 
-        timerId = setInterval(moveInvaders, 2000) //timerId is assigned the value of a timer starting moving invaders, 
+        timerId = setInterval(moveInvaders, 200) //timerId is assigned the value of a timer starting moving invaders, 
         gameRunning = true // and gameRunning = true
       } else { // if gameRunning is false, timer will not start
         gameRunning = false
@@ -262,7 +262,7 @@ function init() {
     }
 
     function gameOver() {
-      startContent.textContent = ''
+      startContent.style.display = 'none'
       finishContent.textContent = `Game over! Your score is: ${score}`
       playerAudio.src = '../assets/death.wav'
       playerAudio.play()
@@ -282,7 +282,7 @@ function init() {
     function clearGrid() { // resetting variables for game restart
       grid.innerHTML = ''
       score = 0
-      scoreTally.textContent = score
+      scoreTally.textContent = ''
       cells = []
       invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
         11, 12, 13, 14, 15, 16, 17, 18,
@@ -301,6 +301,7 @@ function init() {
   function handleStartBtn() {
     gameStart()
     finishContent.textContent = ''
+    startContent.style.display = 'initial'
     startBtn.disabled = true
     event.target.blur()
   }
