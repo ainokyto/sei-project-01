@@ -6,7 +6,8 @@ function init() {
   const scoreTally = document.querySelector('.actualscore')
   const playerAudio = document.querySelector('#playeraudio')
   const enemyAudio = document.querySelector('#enemyaudio')
-  const header = document.querySelector('.textcontent')
+  const finishContent = document.querySelector('.finishcontent')
+  const startContent = document.querySelector('.startcontent')
 
   // * GAME VARIABLES ------------------------------------------------------
 
@@ -32,7 +33,7 @@ function init() {
   //* // * START GAME --------------------------------------------------------
 
   function gameStart() {
-
+    document.classList.add = 'startcontent'
     createGrid(playerPosition)
     createInvaders()
     startTimer()
@@ -217,6 +218,7 @@ function init() {
               leadInvader = 0
               createInvaders()
               clearInterval(timerId)
+              clearInterval(enemyFireTimerId)
               timerId = setInterval(moveInvaders, 1000)
             }
           }
@@ -260,7 +262,8 @@ function init() {
     }
 
     function gameOver() {
-      header.textContent = `Game over! Your score is: ${score}`
+      startContent.textContent = ''
+      finishContent.textContent = `Game over! Your score is: ${score}`
       playerAudio.src = '../assets/death.wav'
       playerAudio.play()
       gameRunning = false
@@ -297,6 +300,7 @@ function init() {
 
   function handleStartBtn() {
     gameStart()
+    finishContent.textContent = ''
     startBtn.disabled = true
     event.target.blur()
   }
