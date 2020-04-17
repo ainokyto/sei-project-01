@@ -6,7 +6,7 @@ function init() {
   const scoreTally = document.querySelector('.actualscore')
   const playerAudio = document.querySelector('#playeraudio')
   const enemyAudio = document.querySelector('#enemyaudio')
-  const header = document.querySelector('header')
+  const header = document.querySelector('.textcontent')
 
   // * GAME VARIABLES ------------------------------------------------------
 
@@ -26,6 +26,7 @@ function init() {
   let enemyFireTimerId = null
   let firstRowTimerId = null
   let laserTimerId = null
+  // let isShooting = true
 
 
   //* // * START GAME --------------------------------------------------------
@@ -43,7 +44,7 @@ function init() {
     function createGrid(startingPosition) {
       for (let i = 0; i < cellCount; i++) {
         const cell = document.createElement('div')
-        cell.textContent = i
+        // cell.textContent = i
         grid.appendChild(cell)
         cells.push(cell)
       }
@@ -75,7 +76,7 @@ function init() {
         direction = 1
       }
       addInvaders()
-      lastRow()
+      bottomRow()
     }
 
     //* REMOVE INVADERS CLASS --------------------------------------------------
@@ -93,11 +94,13 @@ function init() {
       })
     }
 
-    function lastRow() {
+    //* FUNCTION TO CHECK WHETHER INVADERS REACH PLAYER -------------------------
+
+    function bottomRow() {
       const playerCollision = invaderArray.some(invader => {
         return cells[invader].classList.contains('spaceship')
       })
-      if (playerCollision === true) {
+      if (playerCollision) {
         gameOver()
       } return
     }
@@ -108,7 +111,7 @@ function init() {
       // create a global variable for gameRunning and give it the value Boolean false
       // create a global variable for timer and give it the value 'null'
       if (!gameRunning) {  // make an if statement where if gameRunning = true, 
-        timerId = setInterval(moveInvaders, 200) //timerId is assigned the value of a timer starting moving invaders, 
+        timerId = setInterval(moveInvaders, 2000) //timerId is assigned the value of a timer starting moving invaders, 
         gameRunning = true // and gameRunning = true
       } else { // if gameRunning is false, timer will not start
         gameRunning = false
@@ -143,37 +146,55 @@ function init() {
 
     //* FIRE AT INVADERS ----------------------------------------------------------------
 
+
     function fireLaser() {
+      // limitLasers()
       playerAudio.src = '../assets/meow.wav'
       playerAudio.play()
+
+      //* LIMIT PLAYER TO ONE LASERBEAM PER COLUMN -------------------------------------------
+
       let laserIndex = playerPosition - width // laser starts at cell directly above player
       let newLaserIndex = laserIndex
-      const columnArray = []
+      const columnArray = [] // empty array 
 
-      for (let i = 1; i < width - 1; i++) {
-        columnArray.push(newLaserIndex -= 11)
+      for (let i = 1; i < width - 1; i++) { // push all same column cells into array  
+        columnArray.push(newLaserIndex -= 11) //
       }
 
-      const someContainLasers = columnArray.some(item => {
-        return cells[item].classList.contains('laser')
+      const someContainLasers = columnArray.some(item => { // loop through column to find out
+        return cells[item].classList.contains('laser') // whether any of the cells contain a live laser
       })
 
-      if (!someContainLasers) {
+      if (!someContainLasers) { // if there are no lasers
         cells[laserIndex].classList.add('laser')
-        laserTimerId = setInterval(laserAdvance, 100)
+        laserTimerId = setInterval(laserAdvance, 100) // player may fire
       } else {
         console.log('you cant shoot!')
       }
 
-      //* MAKE LASER ADVANCE ACROSS THE GRID ------------------------------------------------------
+      // limit user lasers to one live laser beam at a time
+      // function limitLasers() {
+      //   if (!isShooting) {
+      //     laserTimerId = setInterval(laserAdvance, 100)
+      //     isShooting = true
+      //   } else {
+      //     isShooting = false
+      //   }
+      // }
+
+      //* MAKE LASER ADVANCE ACROSS THE GRID ----------------------------------------------------
 
       function laserAdvance() {
         cells[laserIndex].classList.remove('laser') // remove laser class
-        if (laserIndex > width - 1) { // stops at the grid
+        if (laserIndex > width - 1) {
           laserIndex = laserIndex - width // finding the cell directly above curren laserindex
           cells[laserIndex].classList.add('laser') // add class to new square
-
-          //* COLLISION DETECTION
+          if (laserIndex === width - width) { // stops at the grid
+            // console.log('past grid!')
+            clearInterval(laserTimerId)
+          }
+          //* COLLISION DETECTION ---------------------------------------------------------------
           if (cells[laserIndex].classList.contains('invaders')) { // If laser 'hits' invader
             clearInterval(laserTimerId) //stop timer
             cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes 
@@ -190,7 +211,13 @@ function init() {
             enemyAudio.src = '../assets/zap.wav'
             enemyAudio.play()
             if (invaderArray.length === 0) {
-              header.innerHTML = `You win! Your score is: ${score}`
+              invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
+                11, 12, 13, 14, 15, 16, 17, 18,
+                22, 23, 24, 25, 26, 27, 28, 29]
+              leadInvader = 0
+              createInvaders()
+              clearInterval(timerId)
+              timerId = setInterval(moveInvaders, 1000)
             }
           }
         }
@@ -233,10 +260,11 @@ function init() {
     }
 
     function gameOver() {
-      header.innerHTML = `Game over! Your score is: ${score}`
+      header.textContent = `Game over! Your score is: ${score}`
       playerAudio.src = '../assets/death.wav'
       playerAudio.play()
       gameRunning = false
+      startBtn.disabled = false
       clearGrid()
       clearInterval(timerId)
       clearInterval(laserTimerId)
@@ -274,7 +302,7 @@ function init() {
   }
 
   startBtn.addEventListener('click', handleStartBtn)
-  resetBtn.addEventListener('click', gameStart)
+  resetBtn.addEventListener('click', handleStartBtn)
 
 }
 

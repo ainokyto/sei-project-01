@@ -4,8 +4,8 @@
   /* cursor: pointer; */
 }
 
-header {
-  margin: 0 auto;
+.textcontent {
+  margin: 50px auto;
   text-align: center;
   font-size: 100px
 }
@@ -14,13 +14,17 @@ h1 {
   letter-spacing: 10px;
   text-align: center;
   font-size: 100px;
-  margin-bottom: 0;
+  margin: 0 auto;
 }
 
-h2 {
+/* h2 {
   text-align: center;
   font-size: 40px;
   letter-spacing: 3px;
+} */
+
+h4 {
+  font-size: 30px;
 }
 
 .buttons {
@@ -33,7 +37,8 @@ h2 {
   background-color: black;
   font-size: 20px;
   padding: 10px;
-  margin-right: 40px;
+  margin-right: 50px;
+  border-radius: 10%;
 }
 
 .reset {
@@ -41,12 +46,11 @@ h2 {
   background-color: black;
   font-size: 20px;
   padding: 10px;
-  margin-left: 40px;
+  margin-left: 50px;
+  border-radius: 10%;
 }
 
 body {
-  height: 100vh;
-  margin: 0 auto;
   background-image:url(../assets/carole-joe-background.png);
   background-size: cover;
   /* background-position: center center; */
@@ -80,7 +84,8 @@ span {
 .grid {
   background-color: rgba(0, 0, 0, 0.7);
   align-items: center;
-  /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 0 20px 0 rgb(255, 255, 255);
+  border-radius: 10%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -89,8 +94,8 @@ span {
 }
 
 .grid div {
-  border: 1px solid black;
-  border-style: dotted;
+  /* border: 1px solid black; */
+  /* border-style: dotted; */
   flex-grow: 1;
   height: 9%;
   width: 9%;
