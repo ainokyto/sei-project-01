@@ -101,6 +101,7 @@ span {
 
 .grid {
   margin-top: 20vh;
+  margin-bottom: 5vh;
   background-color: rgba(0, 0, 0, 0.7);
   align-items: center;
   box-shadow: 6px 6px 20px 6px var(--white);

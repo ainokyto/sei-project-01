@@ -159,7 +159,7 @@ function init() {
 
     function fireLaser() {
       // limitLasers()
-      playerAudio.src = '../assets/meow.wav'
+      playerAudio.src = './assets/meow.wav'
       playerAudio.play()
 
       //* LIMIT PLAYER TO ONE LASERBEAM PER COLUMN -------------------------------------------
@@ -213,7 +213,7 @@ function init() {
             invaderArray.splice(killedInvader, 1)
             score += 1000
             scoreTally.innerHTML = score
-            enemyAudio.src = '../assets/zap.wav'
+            enemyAudio.src = './assets/zap.wav'
             enemyAudio.play()
             if (invaderArray.length === 0) {
               youWin()
@@ -277,7 +277,7 @@ function init() {
       startBtn.removeEventListener('click', firstRowTimer)
       startContent.style.display = 'none'
       finishContent.textContent = `Game over! Your score is: ${score}`
-      playerAudio.src = '../assets/death.wav'
+      playerAudio.src = './assets/death.wav'
       playerAudio.play()
       gameRunning = false
       startBtn.style.display = 'initial'
