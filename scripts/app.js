@@ -1,4 +1,5 @@
 function init() {
+
   // * DOM ELEMENTS ----------------------------------------------------------
 
   const startBtn = document.querySelector('.start')
@@ -24,13 +25,13 @@ function init() {
   let leadInvader = 0
   let playerPosition = 115
   let timerId = null
+  let laserTimerId = null
   let enemyFireTimerId = null
   let firstRowTimerId = null
-  let laserTimerId = null
   // let isShooting = true
 
 
-  //* // * START GAME --------------------------------------------------------
+  // * START GAME --------------------------------------------------------
 
   function gameStart() {
 
@@ -38,7 +39,6 @@ function init() {
     createInvaders()
     startTimer()
     firstRowTimer()
-
 
     // * CREATE GRID AND PLAYER SPACESHIP -------------------------------------
 
@@ -51,22 +51,29 @@ function init() {
       }
       cells[startingPosition].classList.add('spaceship')
     }
+
     // * CREATE INVADERS ON GRID ----------------------------------------------
 
     function createInvaders() {
       invaderArray.forEach(invader =>
         cells[invader].classList.add('invaders'))
     }
-    //* INVADER MOVEMENT ------------------------------------------------------
-    // in the if statement, direction moves right, -1 moves left, width moves down
 
-    // game starts with invaders moving right
-    // when Invader Zero hits index 3 the move width down to 14
-    // function removeInvaders - remove classes
-    // function addInvaders - based on the direction(1) variable
+    //* INVADER MOVEMENT --------------------------------------------------------
 
     function moveInvaders() {
       removeInvaders()
+
+      //* CHECK WHETHER INVADERS REACH THE BOTTOM ROW -----------------------------
+
+      const dangerZone = [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120]
+      const invadersInDangerZone = dangerZone.filter(index => invaderArray.includes(index))
+      if (invadersInDangerZone.length > 0) {
+        gameOver()
+      }
+
+      //* INVADER MOVEMENT LOGIC --------------------------------------------------
+
       if (leadInvader % width === 3 && direction === 1) {
         direction = width
       } else if (leadInvader % width === 3 && direction === width) {
@@ -77,16 +84,18 @@ function init() {
         direction = 1
       }
       addInvaders()
-      bottomRow()
+      reachPlayer()
     }
 
     //* REMOVE INVADERS CLASS --------------------------------------------------
+
     function removeInvaders() {
       invaderArray.forEach(invader =>
         cells[invader].classList.remove('invaders'))
     }
 
     //* ADD INVADERS CLASS ------------------------------------------------------
+
     function addInvaders() { // draws the invaders back on their new position on the grid
       invaderArray = invaderArray.map(a => a + direction)
       leadInvader = leadInvader + direction
@@ -97,7 +106,7 @@ function init() {
 
     //* FUNCTION TO CHECK WHETHER INVADERS REACH PLAYER -------------------------
 
-    function bottomRow() {
+    function reachPlayer() {
       const playerCollision = invaderArray.some(invader => {
         return cells[invader].classList.contains('spaceship')
       })
@@ -112,7 +121,7 @@ function init() {
       // create a global variable for gameRunning and give it the value Boolean false
       // create a global variable for timer and give it the value 'null'
       if (!gameRunning) {  // make an if statement where if gameRunning = true, 
-        timerId = setInterval(moveInvaders, 200) //timerId is assigned the value of a timer starting moving invaders, 
+        timerId = setInterval(moveInvaders, 1200) //timerId is assigned the value of a timer starting moving invaders, 
         gameRunning = true // and gameRunning = true
       } else { // if gameRunning is false, timer will not start
         gameRunning = false
@@ -194,17 +203,12 @@ function init() {
           if (laserIndex === width - width) { // stops at the grid
             // console.log('past grid!')
             clearInterval(laserTimerId)
+            cells[laserIndex].classList.remove('laser')
           }
           //* COLLISION DETECTION ---------------------------------------------------------------
           if (cells[laserIndex].classList.contains('invaders')) { // If laser 'hits' invader
             clearInterval(laserTimerId) //stop timer
-            cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes 
-
-            // const killedAliensArray = []
-            // const killedAliens = invaderArray.indexOf(laserIndex) 
-            // invaderArray.pop(killedAliens)
-            // killedAliensArray.push(killedAliens) 
-
+            cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes
             const killedInvader = invaderArray.indexOf(laserIndex) // locates the index of hit invader
             invaderArray.splice(killedInvader, 1)
             score += 1000
@@ -212,19 +216,26 @@ function init() {
             enemyAudio.src = '../assets/zap.wav'
             enemyAudio.play()
             if (invaderArray.length === 0) {
-              invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
-                11, 12, 13, 14, 15, 16, 17, 18,
-                22, 23, 24, 25, 26, 27, 28, 29]
-              leadInvader = 0
-              createInvaders()
-              clearInterval(timerId)
-              clearInterval(enemyFireTimerId)
-              timerId = setInterval(moveInvaders, 1000)
+              youWin()
             }
           }
         }
       }
     }
+    // LEVEL UP FUNCTION
+    // function levelUp() {
+    //   invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
+    //     11, 12, 13, 14, 15, 16, 17, 18,
+    //     22, 23, 24, 25, 26, 27, 28, 29]
+    //   leadInvader = 0
+    //   createInvaders()
+    //   clearInterval(timerId)
+    //   clearInterval(enemyFireTimerId)
+    //   timerId = setInterval(moveInvaders, 2000)
+    // }
+
+
+
 
     //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ---------------------------------------------------------
     function checkFirstRow() {
@@ -249,7 +260,7 @@ function init() {
 
       function enemyFire() {
         cells[enemyLaserStart].classList.remove('enemy') // remove enemy laser class
-        if (enemyLaserStart <= 110) { // stop at the bottom
+        if (enemyLaserStart <= 109) { // stop at the bottom
           enemyLaserStart += width // make laser move down
           cells[enemyLaserStart].classList.add('enemy')
           if (cells[enemyLaserStart].classList.contains('spaceship')) {
@@ -262,13 +273,17 @@ function init() {
     }
 
     function gameOver() {
+      document.removeEventListener('keydown', handleKeyDown)
+      startBtn.removeEventListener('click', firstRowTimer)
       startContent.style.display = 'none'
       finishContent.textContent = `Game over! Your score is: ${score}`
       playerAudio.src = '../assets/death.wav'
       playerAudio.play()
       gameRunning = false
-      startBtn.disabled = false
-      clearGrid()
+      startBtn.style.display = 'initial'
+      resetBtn.style.display = 'initial'
+      
+
       clearInterval(timerId)
       clearInterval(laserTimerId)
       clearInterval(enemyFireTimerId)
@@ -276,6 +291,29 @@ function init() {
       for (let i = 0; i < 1000; i++) {
         clearInterval(i)
       }
+      clearGrid()
+    }
+
+    function youWin() {
+      document.removeEventListener('keydown', handleKeyDown)
+      startBtn.removeEventListener('click', firstRowTimer)
+      startContent.style.display = 'none'
+      finishContent.textContent = `You Win! Your score is: ${score}`
+      playerAudio.src = '../assets/death.wav'
+      playerAudio.play()
+      gameRunning = false
+      startBtn.style.display = 'initial'
+      resetBtn.style.display = 'initial'
+      
+
+      clearInterval(timerId)
+      clearInterval(laserTimerId)
+      clearInterval(enemyFireTimerId)
+      clearInterval(firstRowTimerId)
+      for (let i = 0; i < 1000; i++) {
+        clearInterval(i)
+      }
+      clearGrid()
     }
 
 
@@ -287,13 +325,15 @@ function init() {
       invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
         11, 12, 13, 14, 15, 16, 17, 18,
         22, 23, 24, 25, 26, 27, 28, 29]
+      leadInvader = 0
       direction = 1
       playerPosition = 115
     }
 
     document.addEventListener('keydown', handleKeyDown)
     startBtn.addEventListener('click', firstRowTimer)
-
+    resetBtn.addEventListener('click', firstRowTimer)
+    
   }
 
   //* FUNCTION TO START GAME ---------------------------------------------------
@@ -302,7 +342,8 @@ function init() {
     gameStart()
     finishContent.textContent = ''
     startContent.style.display = 'initial'
-    startBtn.disabled = true
+    startBtn.style.display = 'none'
+    resetBtn.style.display = 'none'
     event.target.blur()
   }
 

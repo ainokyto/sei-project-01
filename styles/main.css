@@ -1,5 +1,6 @@
 :root {
-  --white:rgb(255, 255, 255)
+  --white:rgb(255, 255, 255);
+  --violet: rgba(190, 144, 212, 0.5)
 }
 
 * {
@@ -74,9 +75,9 @@ body {
 }
 
 span {
-  font-size: 30px;
+  font-size: 50px;
   letter-spacing: 2px;
-  background-color: rgba(190, 144, 212, 0.5);
+  background-color: var(--violet);
 }
 
 /* .startmodule {
@@ -114,10 +115,10 @@ span {
 
 @keyframes glow {
 	0%, 100% {
-		box-shadow: 6px 6px 20px var(--white);
+    box-shadow: 6px 6px 20px var(--white);
 	}
 	50% {
-		box-shadow: 6px 6px 80px var(--white);
+		box-shadow: 6px 6px 100px var(--white);
 	}
 }
 
