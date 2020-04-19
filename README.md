@@ -1,6 +1,6 @@
 ![ga-red-logo](https://cloud.githubusercontent.com/assets/40461/8183776/469f976e-1432-11e5-8199-6ac91363302b.png)
 # General Assembly Project One - Space Invaders Style Game
-My first develeopment project for the Software Engineering Immersive course and also my first project using JavaScript.
+My first dev project for the Software Engineering Immersive course and also my first project using JavaScript.
 
 ## Goal:
 To build a functioning browser game with Vanilla JavaScript.
