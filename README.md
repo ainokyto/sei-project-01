@@ -9,9 +9,9 @@ To build a functioning browser game with Vanilla JavaScript.
 8 days
 
 ## Getting started
-<hr>
 1. Access the source code can be accessed via the 'Clone or download' button 
-2. Open the ```index.html``` file in your browser of choice to start the game.
+
+2. Open the index.html file in your browser of choice to start the game.
 
 ## Deployment
 This game has been deployed on GitHub Pages and is located in: ainokyto.github.io/sei-project-one/
