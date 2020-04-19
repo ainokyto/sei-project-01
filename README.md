@@ -10,7 +10,6 @@ To build a functioning browser game with Vanilla JavaScript.
 
 ## Getting started
 1. Access the source code can be accessed via the 'Clone or download' button 
-
 2. Open the index.html file in your browser of choice to start the game.
 
 ## Deployment
