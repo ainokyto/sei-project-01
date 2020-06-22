@@ -61,7 +61,7 @@ I started developing the game by sketching out a plan of all the different funct
 * I placed the invaders on the grid by creating an invaders array, which included the index values of the squares on the grid
 * Then I worked on the invader movement logic, which moves the invaders right, down, left and down following a lead invader. I created a set interval which runs until the invaders reach the bottom row.
 
-````
+```
       // INVADER MOVEMENT LOGIC ------------------------------------------------
 
       if (leadInvader % width === 3 && direction === 1) {
