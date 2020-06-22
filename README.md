@@ -35,10 +35,123 @@ My iteration pays tribute to the 2020 controversial Netflix hit, 'Tiger King - M
 I started developing the game by sketching out a plan of all the different functionalities the game should have, and ranked them to critical for MVP and Nice-To-Haves. I then started pseudocoding my MVP down into bite size chunks to make sure I could deliver it in time to allow time for polishing and styling. 
 * I created the game grid square by setting a value for width, using a for-loop to create a div element while the index value was less than width times width. I then pushed these divs to an empty array and appended them to the grid div in my HTML.
 * I made one div for player spaceship, and created keydown event listeners to allow the player to move and fire when the corresponding keys are pressed, with logic to refrain player from moving off the grid.
-* I placed the invaders on the grid by creating an invaders array, which included the index values of the squares on the grid 
+
+```
+    // PLAYER SPACESHIP MOVEMENT ---------------------------------------------
+
+    function handleKeyDown(event) {
+      cells[playerPosition].classList.remove('spaceship')
+      switch (event.keyCode) {
+        case 39:
+          playerPosition < 120 ? playerPosition++ : playerPosition
+          break
+        case 37:
+          playerPosition > 110 ? playerPosition-- : playerPosition
+          break
+        case 32:
+          fireLaser()
+          break
+        default:
+          playerPosition
+      }
+      cells[playerPosition].classList.add('spaceship')
+    }
+```
+
+* I placed the invaders on the grid by creating an invaders array, which included the index values of the squares on the grid
 * Then I worked on the invader movement logic, which moves the invaders right, down, left and down following a lead invader. I created a set interval which runs until the invaders reach the bottom row.
-* Then it was time to create some projectiles. As an effort to make the game a bit more challenging, player lasers are limited to one column at a time. Invaders fire by selecting a random invader from the first row to fire every 2 seconds.
-* When the invaders reach the bottom row or when the player is hit by invader fire, this calls a Game Over function which displays player's score and clears the grid and resets the game variables
+
+````
+      // INVADER MOVEMENT LOGIC ------------------------------------------------
+
+      if (leadInvader % width === 3 && direction === 1) {
+        direction = width
+      } else if (leadInvader % width === 3 && direction === width) {
+        direction = -1
+      } else if (leadInvader % width === 0 && direction === -1) {
+        direction = width
+      } else if (leadInvader % width === 0 && direction === width) {
+        direction = 1
+      }
+      addInvaders()
+      reachPlayer()
+    }
+```
+
+* When the invaders reach the bottom row or when the player is hit by invader fire, this calls a Game Over function which displays player's score and clears the grid and resets the game variables.
+* Then it was time to create some lasers. Laser movements across the grid are controlled timers. When player lasers hit the invader armada, the hit invader is spliced off the array, once all invaders are eliminated this calls a youWin() function.
+
+```
+      //* MAKE LASER ADVANCE ACROSS THE GRID ----------------------------------------------------
+
+      function laserAdvance() {
+        cells[laserIndex].classList.remove('laser') // remove laser class
+        if (laserIndex > width - 1) {
+          laserIndex = laserIndex - width // finding the cell directly above current laserindex
+          cells[laserIndex].classList.add('laser') // add class to next cell
+          if (laserIndex === width - width) { // stops at the grid
+            // console.log('past grid!')
+            clearInterval(laserTimerId)
+            cells[laserIndex].classList.remove('laser')
+          }
+          
+          //* COLLISION DETECTION ---------------------------------------------------------------
+
+          if (cells[laserIndex].classList.contains('invaders')) { // If laser 'hits' invader
+            clearInterval(laserTimerId) //stop timer
+            cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes
+            const killedInvader = invaderArray.indexOf(laserIndex) // locates the index of hit invader
+            invaderArray.splice(killedInvader, 1)
+            score += 1000
+            scoreTally.innerHTML = score
+            enemyAudio.src = './assets/zap.wav'
+            enemyAudio.play()
+            if (invaderArray.length === 0) {
+              youWin()
+            }
+          }
+        }
+      }
+    }
+```
+
+* Invaders fire by logic selecting a random invader from the first row to fire every 2.5 seconds.
+
+```
+    //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ----------------------------------
+
+    function checkFirstRow() {
+      const randomInvader = Math.floor(Math.random() * invaderArray.length) // get random number from the array length
+      // console.log(randomInvader)
+      let enemyLaserStart = invaderArray[randomInvader] + width // get cell directly below random invader
+      // console.log(enemyLaserStart)
+      if (!cells[enemyLaserStart].classList.contains('invaders')) { // if random invader is on first row
+        cells[enemyLaserStart].classList.add('enemy') // start laser here
+      } else if (!cells[enemyLaserStart + width].classList.contains('invaders')) { // if random invader is on second row
+        cells[enemyLaserStart].classList.add('enemy') // start laser here
+      } else {
+        cells[enemyLaserStart + width + width].classList.add('enemy')
+      }
+
+      enemyFire()
+      enemyFireTimerId = setInterval(enemyFire, 250)
+
+      //* ENEMY LASER ADVANCE ACROSS THE GRID -------------------------------------------------------
+
+      function enemyFire() {
+        cells[enemyLaserStart].classList.remove('enemy') // remove enemy laser class
+        if (enemyLaserStart <= 109) { // stop at the bottom
+          enemyLaserStart += width // make laser move down
+          cells[enemyLaserStart].classList.add('enemy')
+          if (cells[enemyLaserStart].classList.contains('spaceship')) {
+            gameOver()
+          }
+        } else {
+          clearInterval(enemyLaserStart)
+        }
+      }
+    }
+```
 
 ### Challenges
 This was my first project using JavaScript so I faced many challenges, of which the biggest were:

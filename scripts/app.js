@@ -198,14 +198,16 @@ function init() {
       function laserAdvance() {
         cells[laserIndex].classList.remove('laser') // remove laser class
         if (laserIndex > width - 1) {
-          laserIndex = laserIndex - width // finding the cell directly above curren laserindex
+          laserIndex = laserIndex - width // finding the cell directly above current laserindex
           cells[laserIndex].classList.add('laser') // add class to new square
           if (laserIndex === width - width) { // stops at the grid
             // console.log('past grid!')
             clearInterval(laserTimerId)
             cells[laserIndex].classList.remove('laser')
           }
+          
           //* COLLISION DETECTION ---------------------------------------------------------------
+
           if (cells[laserIndex].classList.contains('invaders')) { // If laser 'hits' invader
             clearInterval(laserTimerId) //stop timer
             cells[laserIndex].classList.remove('invaders', 'laser') // clear cell from both classes
@@ -222,6 +224,7 @@ function init() {
         }
       }
     }
+
     // LEVEL UP FUNCTION
     // function levelUp() {
     //   invaderArray = [0, 1, 2, 3, 4, 5, 6, 7,
