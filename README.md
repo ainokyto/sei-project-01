@@ -40,7 +40,6 @@ I started developing the game by sketching out a plan of all the different funct
 * Then it was time to create some projectiles. As an effort to make the game a bit more challenging, player lasers are limited to one column at a time. Invaders fire by selecting a random invader from the first row to fire every 2 seconds.
 * When the invaders reach the bottom row or when the player is hit by invader fire, this calls a Game Over function which displays player's score and clears the grid and resets the game variables
 
-
 ### Challenges
 This was my first project using JavaScript so I faced many challenges, of which the biggest were:
 * Invader armada movement logic that should remain inaffected by changes to the invader array
