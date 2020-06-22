@@ -299,7 +299,7 @@ function init() {
       startBtn.removeEventListener('click', firstRowTimer)
       startContent.style.display = 'none'
       finishContent.textContent = `You Win! Your score is: ${score}`
-      playerAudio.src = '../assets/death.wav'
+      playerAudio.src = './assets/death.wav'
       playerAudio.play()
       gameRunning = false
       startBtn.style.display = 'initial'
