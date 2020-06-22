@@ -1,4 +1,4 @@
-![game-screenshot](../assets/screenshots/start.png)
+![game-screenshot](./assets/screenshots/start.png)
 # Space Invaders
 ## GA Project One
 My first dev project for the Software Engineering Immersive course and also my first project using JavaScript.
