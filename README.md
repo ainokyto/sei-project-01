@@ -1,6 +1,6 @@
 # Space Invaders - GA Project One
 
-My first dev project for the Software Engineering Immersive course and also my first project using JavaScript.
+My first dev project for the Software Engineering Immersive course and also my first ever project using JavaScript.
 
 ![game-screenshot](./assets/screenshots/start.png)
 
