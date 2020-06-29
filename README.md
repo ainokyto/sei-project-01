@@ -80,10 +80,10 @@ I started developing the game by sketching out a plan of all the different funct
 ```
 
 * When the invaders reach the bottom row or when the player is hit by invader fire, this calls a Game Over function which displays player's score and clears the grid and resets the game variables.
-* Then it was time to create some lasers. Laser movements across the grid are controlled timers. When player lasers hit the invader armada, the hit invader is spliced off the array, once all invaders are eliminated this calls a youWin() function.
+* Then it was time to create some lasers. Laser movements across the grid are controlled timers. When player lasers hit the invader armada, the hit invader is spliced off the array, once all invaders are eliminated this calls a youWin() function. Invaders fire by setting a timer to select a random invader from the first row to fire every 2.5 seconds.
 
 ```javascript
-      //* MAKE LASER ADVANCE ACROSS THE GRID ----------------------------------------------------
+      // MAKE LASER ADVANCE ACROSS THE GRID ----------------------------------------------------
 
       function laserAdvance() {
         cells[laserIndex].classList.remove('laser') // remove laser class
@@ -96,7 +96,7 @@ I started developing the game by sketching out a plan of all the different funct
             cells[laserIndex].classList.remove('laser')
           }
           
-          //* COLLISION DETECTION ---------------------------------------------------------------
+          // COLLISION DETECTION ---------------------------------------------------------------
 
           if (cells[laserIndex].classList.contains('invaders')) { // If laser 'hits' invader
             clearInterval(laserTimerId) //stop timer
@@ -111,44 +111,6 @@ I started developing the game by sketching out a plan of all the different funct
               youWin()
             }
           }
-        }
-      }
-    }
-```
-
-* Invaders fire by logic selecting a random invader from the first row to fire every 2.5 seconds.
-
-```javascript
-    //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ----------------------------------
-
-    function checkFirstRow() {
-      const randomInvader = Math.floor(Math.random() * invaderArray.length) // get random number from the array length
-      // console.log(randomInvader)
-      let enemyLaserStart = invaderArray[randomInvader] + width // get cell directly below random invader
-      // console.log(enemyLaserStart)
-      if (!cells[enemyLaserStart].classList.contains('invaders')) { // if random invader is on first row
-        cells[enemyLaserStart].classList.add('enemy') // start laser here
-      } else if (!cells[enemyLaserStart + width].classList.contains('invaders')) { // if random invader is on second row
-        cells[enemyLaserStart].classList.add('enemy') // start laser here
-      } else {
-        cells[enemyLaserStart + width + width].classList.add('enemy')
-      }
-
-      enemyFire()
-      enemyFireTimerId = setInterval(enemyFire, 250)
-
-      //* ENEMY LASER ADVANCE ACROSS THE GRID -------------------------------------------------------
-
-      function enemyFire() {
-        cells[enemyLaserStart].classList.remove('enemy') // remove enemy laser class
-        if (enemyLaserStart <= 109) { // stop at the bottom
-          enemyLaserStart += width // make laser move down
-          cells[enemyLaserStart].classList.add('enemy')
-          if (cells[enemyLaserStart].classList.contains('spaceship')) {
-            gameOver()
-          }
-        } else {
-          clearInterval(enemyLaserStart)
         }
       }
     }
