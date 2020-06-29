@@ -1,13 +1,14 @@
-![game-screenshot](./assets/screenshots/start.png)
-# Space Invaders
-## GA Project One
-My first dev project for the Software Engineering Immersive course and also my first project using JavaScript.
+# Space Invaders - GA Project One
 
-## Getting started
+My first dev project for the Software Engineering Immersive course and also my first ever project using JavaScript.
+
+![game-screenshot](./assets/screenshots/start.png)
+
+## Deployment
 
 The game has been deployed with GitHub Pages and is available at [here](ainokyto.github.io/sei-project-one/).
 
-Alternatively,
+## Getting started
 
 1. Access the source code via the 'Clone or download' button 
 2. Open the index.html file in your browser of choice to start the game.
