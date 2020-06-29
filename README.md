@@ -37,7 +37,7 @@ I started developing the game by sketching out a plan of all the different funct
 * I created the game grid square by setting a value for width, using a for-loop to create a div element while the index value was less than width times width. I then pushed these divs to an empty array and appended them to the grid div in my HTML.
 * I made one div for player spaceship, and created keydown event listeners to allow the player to move and fire when the corresponding keys are pressed, with logic to refrain player from moving off the grid.
 
-```
+```javascript
     // PLAYER SPACESHIP MOVEMENT ---------------------------------------------
 
     function handleKeyDown(event) {
@@ -62,7 +62,7 @@ I started developing the game by sketching out a plan of all the different funct
 * I placed the invaders on the grid by creating an invaders array, which included the index values of the squares on the grid
 * Then I worked on the invader movement logic, which moves the invaders right, down, left and down following a lead invader. I created a set interval which runs until the invaders reach the bottom row.
 
-```
+```javascript
       // INVADER MOVEMENT LOGIC ------------------------------------------------
 
       if (leadInvader % width === 3 && direction === 1) {
@@ -82,7 +82,7 @@ I started developing the game by sketching out a plan of all the different funct
 * When the invaders reach the bottom row or when the player is hit by invader fire, this calls a Game Over function which displays player's score and clears the grid and resets the game variables.
 * Then it was time to create some lasers. Laser movements across the grid are controlled timers. When player lasers hit the invader armada, the hit invader is spliced off the array, once all invaders are eliminated this calls a youWin() function.
 
-```
+```javascript
       //* MAKE LASER ADVANCE ACROSS THE GRID ----------------------------------------------------
 
       function laserAdvance() {
@@ -118,7 +118,7 @@ I started developing the game by sketching out a plan of all the different funct
 
 * Invaders fire by logic selecting a random invader from the first row to fire every 2.5 seconds.
 
-```
+```javascript
     //* CHOOSE A RANDOM INVADER FROM FIRST ROW AND FIRE ENEMY LASER ----------------------------------
 
     function checkFirstRow() {
