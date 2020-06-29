@@ -6,7 +6,7 @@ My first dev project for the Software Engineering Immersive course and also my f
 
 ## Deployment
 
-The game has been deployed with GitHub Pages and is available [here](ainokyto.github.io/sei-project-01/).
+The game has been deployed with GitHub Pages and is available [here](http://ainokyto.github.io/sei-project-01/).
 
 ## Getting started
 
