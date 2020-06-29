@@ -5,7 +5,7 @@ My first dev project for the Software Engineering Immersive course and also my f
 
 ## Getting started
 
-The game has been deployed with GitHub Pages and is available [here](ainokyto.github.io/sei-project-one/).
+The game has been deployed with GitHub Pages and is available at [here](ainokyto.github.io/sei-project-one/).
 
 Alternatively,
 
@@ -29,7 +29,7 @@ Space Invaders is a classic 80s Taito arcade game. The player, moving left or ri
 
 My iteration pays tribute to the 2020 controversial Netflix hit, 'Tiger King - Murder, Mayhem and Madness'. Joe Exotic is defending his zoo by throwing tiger cubs towards an armada of his nemesis, Carole Baskin.
 
-![game-screenshot](./assets/screenshots/game.png)
+![game-screenshot](./assets/screenshots/tiger.gif)
 
 ## Process
 I started developing the game by sketching out a plan of all the different functionalities the game should have, and ranked them to critical for MVP and Nice-To-Haves. I then started pseudocoding my MVP down into bite size chunks to make sure I could deliver it in time to allow time for polishing and styling. 
