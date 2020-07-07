@@ -60,7 +60,7 @@ I started developing the game by sketching out a plan of all the different funct
 ```
 
 * I placed the invaders on the grid by creating an invaders array, which included the index values of the squares on the grid
-* Then I worked on the invader movement logic, which moves the invaders right, down, left and down following a lead invader. I created a set interval which runs until the invaders reach the bottom row.
+* Then I worked on the invader movement logic, which moves the invaders right, down, left and down following a lead invader. I created a timer to move the invader armada until the invaders reach the bottom row.
 
 ```javascript
       // INVADER MOVEMENT LOGIC ------------------------------------------------
@@ -116,24 +116,28 @@ I started developing the game by sketching out a plan of all the different funct
     }
 ```
 
+## Known errors or bugs
+* Collision logic: occasionally Joe's tiger cubs get stuck on the grid before reaching their goal, or shoot right through the first row of Carols.
+* When user clicks 'Play Again', the invaders shoot two laser beams at the same time. This probably has to do with the timers not clearing properly 
+
 ### Challenges
 This was my first project using JavaScript so I faced many challenges, of which the biggest were:
 * Invader armada movement logic that should remain inaffected by changes to the invader array
 * Collision detection logic
 * Working with various set timers to create movement
 
-
 ### Wins
 * Gained experience in programmatical thinking, logical problem solving and different planning stages
-* A great learning exercise and a fun way to consolidate my learnings, in particular DOM manipulation, JS array methods and timers 
 * A fun and topical design theme
 
 
 ## Future improvements
 A few issues remain to be ironed out, and there are also a few features I would like to add going forward:
-* Collision logic needs a bit more work
 * Add-ons and nice-to-haves to the game flow: spawning new invaders, adding the mothership, different hit scores for each invader row, level-up
 * High Score tally leveraging local storage
 * Start Game and Finish Game modules with using popup functionality
 * Adding responsive design
 * CSS animations to achieve a more impactful design 
+
+## Key learnings
+Making my first static JS browser game from scratch was a great learning exercise and a fun way to consolidate my learnings. In particular, I learnt a lot about DOM manipulation, different use cases for different JS array methods, and working with timers.
